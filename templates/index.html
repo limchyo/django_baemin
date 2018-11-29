@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 {% block title %}baemin_project{% endblock %}
 {% block body %}
+{% include "navbar.html" %}
 <div class="container">
   {% if user.is_authenticated %}
-  <div>{{ user.username }}님 환영합니다!</div>
+    {% if user.partner %}
+      환영합니다
+    {% else %}
+      정보를 입력해주세요
+      <form method="post" action="">
+        {% csrf_token %}
+        <div>
+          <input type="text" name="name" />
+        </div>
+        <div>
+          <input type="text" name="contact" />
+        </div>
+        <div>
+          <input type="text" name="address" />
+        </div>
+        <div>
+          <input type="text" name="description" />
+        </div>
+        <button class="btn btn-default">저장하기</button>
+      </form>
+    {% endif %}
   {% else %}
   <div>로그인 해주세요</div>
   {% endif %}
