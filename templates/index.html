@@ -5,25 +5,43 @@
 <div class="container">
   {% if user.is_authenticated %}
     {% if user.partner %}
-      환영합니다
+    <div class="row">
+      <div>
+        {{ user.parter.name }}
+      </div>
+      <div>
+        {{ user.parter.contact }}
+      </div>
+      <div>
+        {{ user.parter.address }}
+      </div>
+      <div>
+        {{ user.parter.description }}
+      </div>
+    </div>
     {% else %}
-      정보를 입력해주세요
-      <form method="post" action="">
-        {% csrf_token %}
-        <div>
-          <input type="text" name="name" />
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+        <h3>정보를 입력해주세요</h3>
+        <form method="post" action="">
+          {% csrf_token %}
+          <!-- <div>
+            <input type="text" name="name" />
+          </div>
+          <div>
+            <input type="text" name="contact" />
+          </div>
+          <div>
+            <input type="text" name="address" />
+          </div>
+          <div>
+            <input type="text" name="description" />
+          </div> -->
+          {{ form.as_p }}
+          <button class="btn btn-default">저장하기</button>
+        </form>
         </div>
-        <div>
-          <input type="text" name="contact" />
-        </div>
-        <div>
-          <input type="text" name="address" />
-        </div>
-        <div>
-          <input type="text" name="description" />
-        </div>
-        <button class="btn btn-default">저장하기</button>
-      </form>
+      </div>
     {% endif %}
   {% else %}
   <div>로그인 해주세요</div>
