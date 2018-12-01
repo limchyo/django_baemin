@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}baemin_project{% endblock %}
+{% block body %}
+{% include "navbar.html" %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+    <h3>정보를 수정해주세요</h3>
+      <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-default btn-block">수정 완료하기</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -6,17 +6,29 @@
   {% if user.is_authenticated %}
     {% if user.partner %}
     <div class="row">
-      <div>
-        {{ user.parter.name }}
-      </div>
-      <div>
-        {{ user.parter.contact }}
-      </div>
-      <div>
-        {{ user.parter.address }}
-      </div>
-      <div>
-        {{ user.parter.description }}
+      <div class="col-sm-6 col-sm-offset-3">
+        <h2>환영합니다!</h2>
+          <table class="table">
+            <tr>
+              <th>업체명</th>
+              <td>{{ user.partner.name }}</td>
+            </tr>
+            <tr>
+              <th>업체 연락처</th>
+              <td>{{ user.partner.contact }}</td>
+            </tr>
+            <tr>
+              <th>업체 주소</th>
+              <td>{{ user.partner.address }}</td>
+            </tr>
+            <tr>
+              <th>업체 소개</th>
+              <td>{{ user.partner.description }}</td>
+            </tr>
+          </table>
+          <a href="/partner/edit_info/">
+            <button class="btn btn-default btn-block">수정하기</button>
+          </a>
       </div>
     </div>
     {% else %}
@@ -38,7 +50,7 @@
             <input type="text" name="description" />
           </div> -->
           {{ form.as_p }}
-          <button class="btn btn-default">저장하기</button>
+          <button class="btn btn-default btn-block">저장하기</button>
         </form>
         </div>
       </div>
