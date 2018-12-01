@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+{% include "navbar.html" %}
+<div class=row>
+  <div class="col-sm-6 col-sm-offset-3">
+    <form enctype="multipart/form-data" method="post" action="">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-default btn-block">메뉴 추가</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
