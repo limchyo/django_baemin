@@ -129,3 +129,8 @@ def menu_edit(request, menu_id):
             ctx.update({ "form" : menu_form })
 
     return render(request, "menu_add.html", ctx)
+
+def menu_delete(request, menu_id):
+    menu = Menu.objects.get(id=menu_id)
+    menu.delete()
+    return redirect("/partner/menu/")
