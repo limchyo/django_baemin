@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+{% include "navbar.html" %}
+<div class=row>
+  <div class="col-sm-6 col-sm-offset-3">
+    <table class='table'>
+      <tr>
+        <th>메뉴사진</th>
+        <td><img style="width:75%;" src="{{ menu.image.url }}"></td>
+      </tr>
+      <tr>
+        <th>메뉴명</th>
+        <td>{{ menu.name }}</td>
+      </tr>
+      <tr>
+        <th>메뉴가격</th>
+        <td>{{ menu.price }}</td>
+      </tr>
+    </table>
+    <a href="/partner/menu/{{ menu.id }}/edit/">
+      <button class="btn btn-default btn-block">수정하기</button>
+    </a>
+  </div>
+</div>
+{% endblock %}

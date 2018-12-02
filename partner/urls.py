@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from .views import (
-    index, signup, login, logout, edit_info, menu, menu_add,
+    index, signup, login, logout, edit_info,
+    menu, menu_add, menu_detail, menu_edit,
 )
 
 urlpatterns = [
@@ -11,4 +12,6 @@ urlpatterns = [
     url(r'^edit_info/$', edit_info, name='edit_info'),
     url(r'^menu/$', menu, name='menu'),
     url(r'^menu/add/$', menu_add, name='menu_add'),
+    url(r'^menu/(?P<menu_id>[0-9]+)/$', menu_detail, name='menu_detail'),
+    url(r'^menu/(?P<menu_id>[0-9]+)/edit/$', menu_edit, name='menu_edit'),
 ]

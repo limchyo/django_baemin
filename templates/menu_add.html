@@ -3,10 +3,11 @@
 {% include "navbar.html" %}
 <div class=row>
   <div class="col-sm-6 col-sm-offset-3">
+    <h2>메뉴 {% if replacement %}{{ replacement }}{% else %}추가{% endif %}하기</h2>
     <form enctype="multipart/form-data" method="post" action="">
       {% csrf_token %}
       {{ form.as_p }}
-      <button class="btn btn-default btn-block">메뉴 추가</button>
+      <button class="btn btn-default btn-block">메뉴 {% if replacement %}{{ replacement }}{% else %}추가{% endif %}</button>
     </form>
   </div>
 </div>
