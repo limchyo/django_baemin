@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+{% include "navbar.html" %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <div class="row">
+        {% for partner in partner_list %}
+        <div class="col-sm-4">
+          <h4>{{ partner.name }}</h4>
+          <div>{{ partner.address }}</div>
+        </div>
+        {% endfor %}
+      <!--  -->
+        <!-- <div class="col-sm-4">
+          <h4>피자나라 치킨공주</h4>
+          <div>김해시 부원동</div>
+        </div>
+        <div class="col-sm-4">
+          <h4>피자나라 치킨공주</h4>
+          <div>김해시 부원동</div>
+        </div>
+        <div class="col-sm-4">
+          <h4>피자나라 치킨공주</h4>
+          <div>김해시 부원동</div>
+        </div> -->
+      <!--  -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
