@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import PartnerForm, MenuForm
-from .models import Menu
+from .models import Menu, Partner
 
 # Create your views here.
 def index(request):
@@ -35,6 +35,7 @@ def signup(request):
         password = request.POST.get("password")
 
         user = User.objects.create_user(username, email, password)
+        return redirect("/partner/login/")
 
     return render(request, "signup.html", ctx)
 
@@ -79,6 +80,11 @@ def edit_info(request):
             return redirect("/partner/")
         else:
             ctx.update({ "form" : partner_form })
+
+    # partner = Partner.objects.get(user=request.user)
+    # ctx = {
+    #     "partner" : partner
+    # }
 
     return render(request, "edit_info.html", ctx)
 

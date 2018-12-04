@@ -3,3 +3,17 @@
   padding: 15px;
   margin: 0 auto;
 }
+
+.name-form {
+  margin: 10px;
+}
+
+.sidebar-module {
+    padding: 15px;
+    margin: 0 -15px 15px;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}

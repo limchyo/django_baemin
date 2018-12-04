@@ -11,6 +11,14 @@
         {{ form.as_p }}
         <button class="btn btn-default btn-block">수정 완료하기</button>
       </form>
+      <!-- <form method="post" action="">
+        {% csrf_token %}
+        <input type="name" name="name" class="form-control" required="" autofocus="" value="{{ user.partner.name }}">
+        <input type="contact" name="contact" class="form-control" required="" value="{{ user.partner.contact }}">
+        <input type="address" name="address" class="form-control" required="" value="{{ user.partner.address }}">
+        <input type="description" name="description" class="form-control" required="" value="{{ user.partner.description }}">
+        <button class="btn btn-default btn-block">수정 완료하기</button>
+      </form> -->
     </div>
   </div>
 </div>

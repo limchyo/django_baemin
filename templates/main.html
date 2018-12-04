@@ -3,12 +3,16 @@
 {% include "navbar.html" %}
 <div class="container">
   <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="col-sm-6 col-sm-offset-2">
       <div class="row">
         {% for partner in partner_list %}
         <div class="col-sm-4">
-          <h4>{{ partner.name }}</h4>
-          <div>{{ partner.address }}</div>
+          {% if partner.user.is_active is True %}
+          <div class="name-form">
+            <h4>{{ partner.name }}</h4>
+            <div>{{ partner.address }}</div>
+          </div>
+          {% endif %}
         </div>
         {% endfor %}
       <!--  -->
@@ -27,6 +31,16 @@
       <!--  -->
       </div>
     </div>
+    <div class="col-sm-3 col-sm-offset-1 sidebar">
+      <div class="sidebar-module">
+        <h4>음식 카테고리</h4>
+        <ol class="list-unstyled">
+        <li><a href="/">ALL</a></li>
+        {% for alias, category in category_list %}
+        <li><a href="/?category={{ alias }}">{{ category }}</a></li>
+        {% endfor %}
+        </ol>
+      </div>
   </div>
 </div>
 {% endblock %}
