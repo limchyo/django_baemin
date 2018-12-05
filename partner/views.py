@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import PartnerForm, MenuForm
 from .models import Menu, Partner
 
 # Create your views here.
+URL_LOGIN = '/partner/login/'
+
 def index(request):
     ctx = {}
     if request.method == "GET":
@@ -50,7 +53,11 @@ def login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            return redirect("/partner/")
+            next_value = request.GET.get("next")
+            if next_value:
+                return redirect(next_value)
+            else:
+                return redirect("/partner/")
 
         else:
             ctx.update({ "error" : "존재하지 않는 사용자입니다." })
@@ -62,6 +69,7 @@ def logout(request):
     auth_logout(request)
     return redirect("/partner/")
 
+# @login_required(login_url='/partner/login/')
 def edit_info(request):
     ctx = {}
     if request.method == "GET":
@@ -88,13 +96,17 @@ def edit_info(request):
 
     return render(request, "edit_info.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu(request):
     ctx = {}
+    # if request.user.is_anonymous:
+    #     return redirect("/partner/login/")
     menu_list = Menu.objects.filter(partner=request.user.partner)
     ctx.update({ "menu_list" : menu_list })
 
     return render(request, "menu_list.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_add(request):
     ctx = {}
     if request.method == "GET":
@@ -112,12 +124,14 @@ def menu_add(request):
 
     return render(request, "menu_add.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_detail(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     ctx = { "menu" : menu }
 
     return render(request, "menu_detail.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_edit(request, menu_id):
     ctx = { "replacement" : "수정" }
     menu = Menu.objects.get(id=menu_id)
@@ -136,6 +150,7 @@ def menu_edit(request, menu_id):
 
     return render(request, "menu_add.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()
