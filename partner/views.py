@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import PartnerForm, MenuForm
 from .models import Menu, Partner
 
-# Create your views here.
 URL_LOGIN = '/partner/login/'
 
+def partner_group_check(user):
+    return "partner" in user.groups.all()
+
+# Create your views here.
 def index(request):
     ctx = {}
     if request.method == "GET":
@@ -107,8 +110,11 @@ def menu(request):
     return render(request, "menu_list.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_add(request):
     ctx = {}
+    # if "partner" not in request.user.groups.all():
+    #     return redirect("/")
     if request.method == "GET":
         menu_form = MenuForm()
         ctx.update({ "form" : menu_form })
