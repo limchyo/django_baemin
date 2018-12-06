@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+
+from client.views import common_signup, common_login
 from .forms import PartnerForm, MenuForm
 from .models import Menu, Partner
 
@@ -27,46 +29,15 @@ def index(request):
         else:
             ctx.update({ "form" : partner_form })
 
-
     return render(request, "index.html", ctx)
 
 def signup(request):
     ctx = {}
-
-    if request.method == "GET":
-        pass
-    elif request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-
-        user = User.objects.create_user(username, email, password)
-        return redirect("/partner/login/")
-
-    return render(request, "signup.html", ctx)
+    return common_signup(request, ctx, "partner")
 
 def login(request):
     ctx = {}
-
-    if request.method == "GET":
-        pass
-    elif request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            next_value = request.GET.get("next")
-            if next_value:
-                return redirect(next_value)
-            else:
-                return redirect("/partner/")
-
-        else:
-            ctx.update({ "error" : "존재하지 않는 사용자입니다." })
-
-
-    return render(request, "login.html", ctx)
+    return common_login(request, ctx, "partner")
 
 def logout(request):
     auth_logout(request)
@@ -100,6 +71,7 @@ def edit_info(request):
     return render(request, "edit_info.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu(request):
     ctx = {}
     # if request.user.is_anonymous:
@@ -131,6 +103,7 @@ def menu_add(request):
     return render(request, "menu_add.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_detail(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     ctx = { "menu" : menu }
