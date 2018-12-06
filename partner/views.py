@@ -138,6 +138,7 @@ def menu_detail(request, menu_id):
     return render(request, "menu_detail.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_edit(request, menu_id):
     ctx = { "replacement" : "수정" }
     menu = Menu.objects.get(id=menu_id)
@@ -157,6 +158,7 @@ def menu_edit(request, menu_id):
     return render(request, "menu_add.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()
