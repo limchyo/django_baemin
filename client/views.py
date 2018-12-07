@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import render, redirect
-from partner.models import Partner
+from partner.models import Partner, Menu
+from .models import Client, Order, OrderMenu
 
 # from django.contrib.auth.models import User
 
@@ -37,10 +38,13 @@ def common_signup(request, ctx, group):
         target_group = Group.objects.get(name=group)
         user.groups.add(target_group)
 
-        if group == "partner":
-            return redirect("/partner/login/")
-        else:
-            return redirect("/login/")        
+        if group == "client":
+            Client.objects.create(user=user, name=username)
+
+            if group == "partner":
+                return redirect("/partner/login/")
+            else:
+                return redirect("/login/")
 
     return render(request, "signup.html", ctx)
 
@@ -77,3 +81,33 @@ def common_login(request, ctx, group):
 def login(request):
     ctx = { "is_client" : True }
     return common_login(request, ctx, "client")
+
+def order(request, partner_id):
+    ctx = {}
+    # if request.user.is_anonymous:
+    #     return redirect("/partner/login/")
+    partner = Partner.objects.get(id=partner_id)
+    menu_list = Menu.objects.filter(partner=partner)
+
+    if request.method == "GET":
+        ctx.update({
+            "partner" : partner,
+            "menu_list" : menu_list,
+        })
+    elif request.method == "POST":
+        order = Order.objects.create(
+            client=request.user.client,
+            address="test",
+        )
+        for menu in menu_list:
+            order_menu_count = request.POST.get(str(menu.id))
+            order_menu_count = int(order_menu_count)
+            if order_menu_count > 0:
+                # order.order_menu.add(menu)
+                order_item = OrderMenu.objects.create(
+                    order=order,
+                    menu=menu,
+                    count=order_menu_count,
+                )
+
+    return render(request, "order_menu_list.html", ctx)

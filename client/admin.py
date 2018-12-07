@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Client, Order, OrderMenu
 
-# Register your models here.
+@admin.register(Client, Order, OrderMenu)
+class ClientAdmin(admin.ModelAdmin):
+    pass

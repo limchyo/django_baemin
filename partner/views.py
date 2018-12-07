@@ -7,11 +7,12 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from client.views import common_signup, common_login
 from .forms import PartnerForm, MenuForm
 from .models import Menu, Partner
+from client.models import OrderMenu
 
 URL_LOGIN = '/partner/login/'
 
 def partner_group_check(user):
-    return "partner" in user.groups.all()
+    return "partner" in [group.name for group in user.groups.all()]
 
 # Create your views here.
 def index(request):
@@ -136,3 +137,15 @@ def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()
     return redirect("/partner/menu/")
+
+def order(request):
+    ctx = {}
+    menu_list = Menu.objects.filter(partner=request.user.partner)
+    order_item_list = []
+    for menu in menu_list:
+        order_item_list.extend([
+        item for item in OrderMenu.objects.filter(menu=menu)
+        ])
+    order_list = set([item.order for item in order_item_list])
+    ctx.update({ "order_list" : order_list })
+    return render(request, "order_list_for_partner.html", ctx)
