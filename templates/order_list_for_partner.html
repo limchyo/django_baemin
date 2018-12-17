@@ -8,11 +8,17 @@
       <tr>
         <th>고객 이름</th>
         <th>주소</th>
+        <th>주문 메뉴</th>
       </tr>
       {% for order in order_list %}
       <tr>
         <td>{{ order.client.name }}</td>
         <td>{{ order.address }}</td>
+        <td>
+          {% for menu in order.order_menu.all %}
+            {{ menu.name }}
+          {% endfor %}
+        </td>
       </tr>
       {% endfor %}
     </table>

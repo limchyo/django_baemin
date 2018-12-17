@@ -53,3 +53,6 @@ class Menu(models.Model):
     price = models.PositiveIntegerField(
         verbose_name="가격"
     )
+
+    def __str__(self):
+        return ("{}({})").format(self.name, self.partner.name)

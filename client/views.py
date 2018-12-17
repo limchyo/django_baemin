@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import render, redirect
@@ -5,8 +6,12 @@ from partner.models import Partner, Menu
 from .models import Client, Order, OrderMenu
 
 # from django.contrib.auth.models import User
+URL_LOGIN = '/login/'
 
+def client_group_check(user):
+    return "client" in [group.name for group in user.groups.all()]
 # Create your views here.
+
 def index(request):
     category = request.GET.get("category")
 
@@ -82,6 +87,8 @@ def login(request):
     ctx = { "is_client" : True }
     return common_login(request, ctx, "client")
 
+@login_required(login_url=URL_LOGIN)
+@user_passes_test(client_group_check, login_url=URL_LOGIN)
 def order(request, partner_id):
     ctx = {}
     # if request.user.is_anonymous:

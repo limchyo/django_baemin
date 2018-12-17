@@ -11,11 +11,14 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/partner/">홈</a></li>
         {% if user.is_authenticated %}
-        <li><a href="/partner/menu/">메뉴</a></li>
-        <li><a href="/partner/order/">주문</a></li>
-        <li><a href="/partner/logout/">로그아웃</a></li>
+          {% if user.partner %}
+            <li class="active"><a href="/partner/">홈</a></li>
+            <li><a href="/partner/menu/">메뉴</a></li>
+            <li><a href="/partner/order/">주문</a></li>
+          {% else %}
+            <li><a href="/partner/logout/">로그아웃</a></li>
+          {% endif %}
         {% else %}
         <li><a href="/login/">로그인</a></li>
         <li><a href="/signup/">회원가입</a></li>
